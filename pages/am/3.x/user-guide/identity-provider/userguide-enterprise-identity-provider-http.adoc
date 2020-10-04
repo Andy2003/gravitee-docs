@@ -1,0 +1,239 @@
+= HTTP (web service)
+:page-sidebar: am_3_x_sidebar
+:page-permalink: am/current/am_userguide_enterprise_identity_provider_http.html
+:page-folder: am/user-guide
+:page-layout: am
+
+Gravitee.io AM allows you to authenticate and manage users via remote API calls.
+
+WARNING: For the Identity Provider to work, the user's payload must at least contain the following claims : _sub_.
+To have a more information about your user you can rely on the link:https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims[Standard Claims] of the OpenID Connect protocol.
+To achieve this you can use the User Mapper feature of Gravitee.io AM.
+
+image::am/current/graviteeio-am-userguide-http-idp-mapping.png[]
+
+== Create a HTTP identity provider
+
+Identity providers are created for each security domain, to create an identity provider, follow these steps:
+
+. Go to http://GRAVITEEIO-AM-UI-HOST
+. From the homepage, go to your security domain's `Settings` page, go to `Providers` section
+. From the security domain's providers page, click `(+)` button
+. Choose the `HTTP` identity provider and press `NEXT`
+. Give your identity provider a name
+. Configure the settings as requested
+. Press `Create`
+
+=== Configuration
+
+The HTTP Identity Provider is used to invoke an HTTP(S) URL and put the response content into one or more variables of the execution context.
+
+The result of the authentication is put in a variable named _authenticationResponse_ and the User Management operations are stored in the _usersResponse_ variable.
+
+These variables can be used to check if the result API calls have failed or not. To configure your Identity Provider, you can find after all the data context and options to suit your needs.
+
+==== Authentication Resource
+
+|===
+|Property |Required |Description |Type |Default
+
+.^|baseURL
+^.^|X
+|URL invoked by the HTTP client (support EL)
+^.^|URL
+^.^|-
+
+.^|httpMethod
+^.^|X
+|HTTP Method used to invoke URL
+^.^|HTTP method
+^.^|POST
+
+.^|httpHeaders
+^.^|-
+|List of HTTP headers used to invoke the URL (support EL)
+^.^|HTTP Headers
+^.^|-
+
+.^|httpBody
+^.^|-
+|The body content send when calling the URL (support EL)
+^.^|string
+^.^|{"username":"{#principal}","password":"{#credentials}"}
+
+.^|httpResponseErrorConditions
+^.^|X
+|List of conditions which will be verified to end the request (support EL)
+^.^|string
+^.^|{#authenticationResponse.status == 401}
+|===
+
+==== Users Resource
+
+|===
+|Property |Required |Description |Type |Default
+
+.^|baseURL
+^.^|X
+|URL invoked by the HTTP client (support EL)
+^.^|URL
+^.^|
+|===
+
+===== Create
+
+|===
+|Property |Required |Description |Type |Default
+
+.^|Path
+^.^|X
+|URL invoked by the HTTP client (support EL)
+^.^|URL
+^.^|/users
+
+.^|httpMethod
+^.^|X
+|HTTP Method used to invoke URL
+^.^|HTTP method
+^.^|POST
+
+.^|httpHeaders
+^.^|-
+|List of HTTP headers used to invoke the URL (support EL)
+^.^|HTTP Headers
+^.^|-
+
+.^|httpBody
+^.^|-
+|The body content send when calling the URL (support EL)
+^.^|string
+^.^|{"username":"{#user.username}","email":"{#user.email}", "firstName":"{#user.firstName}", "lastName":"{#user.lastName}"}
+
+.^|httpResponseErrorConditions
+^.^|X
+|List of conditions which will be verified to end the request (support EL)
+^.^|string
+^.^|{#usersResponse.status == 400}
+|===
+
+===== Read
+
+NOTE: Only the _username_ attribute is available at this stage.
+
+|===
+|Property |Required |Description |Type |Default
+
+.^|path
+^.^|X
+|URL invoked by the HTTP client (support EL)
+^.^|URL
+^.^|/users?username={#user.username}
+
+.^|httpMethod
+^.^|X
+|HTTP Method used to invoke URL
+^.^|HTTP method
+^.^|GET
+
+.^|httpHeaders
+^.^|-
+|List of HTTP headers used to invoke the URL (support EL)
+^.^|HTTP Headers
+^.^|-
+
+.^|httpBody
+^.^|-
+|The body content send when calling the URL (support EL)
+^.^|string
+^.^|-
+
+.^|httpResponseErrorConditions
+^.^|X
+|List of conditions which will be verified to end the request (support EL)
+^.^|string
+^.^|{#usersResponse.status == 404}
+|===
+
+===== Update
+
+|===
+|Property |Required |Description |Type |Default
+
+.^|path
+^.^|X
+|URL invoked by the HTTP client (support EL)
+^.^|URL
+^.^|/users/{#user.id}
+
+.^|httpMethod
+^.^|X
+|HTTP Method used to invoke URL
+^.^|HTTP method
+^.^|PUT
+
+.^|httpHeaders
+^.^|-
+|List of HTTP headers used to invoke the URL (support EL)
+^.^|HTTP Headers
+^.^|-
+
+.^|httpBody
+^.^|-
+|The body content send when calling the URL (support EL)
+^.^|string
+^.^|{"username":"{#user.username}","email":"{#user.email}", "firstName":"{#user.firstName}", "lastName":"{#user.lastName}"}
+
+.^|httpResponseErrorConditions
+^.^|X
+|List of conditions which will be verified to end the request (support EL)
+^.^|string
+^.^|{#usersResponse.status == 404}
+|===
+
+===== Delete
+
+|===
+|Property |Required |Description |Type |Default
+
+.^|path
+^.^|X
+|URL invoked by the HTTP client (support EL)
+^.^|URL
+^.^|/users/{#user.id}
+
+.^|httpMethod
+^.^|X
+|HTTP Method used to invoke URL
+^.^|HTTP method
+^.^|DELETE
+
+.^|httpHeaders
+^.^|-
+|List of HTTP headers used to invoke the URL (support EL)
+^.^|HTTP Headers
+^.^|-
+
+.^|httpBody
+^.^|-
+|The body content send when calling the URL (support EL)
+^.^|string
+^.^|-
+
+.^|httpResponseErrorConditions
+^.^|X
+|List of conditions which will be verified to end the request (support EL)
+^.^|string
+^.^|{#usersResponse.status == 404}
+|===
+
+== Test connection
+
+You can test your database connection via your web applications created in Gravitee.io AM.
+
+In the Portal UI, navigate to your `Application > Identity Providers` section and select your inline identity provider.
+
+image::am/current/graviteeio-am-userguide-social-idp-list.png[]
+
+To properly test, you should call the Login Page (i.e `/oauth/authorize` endpoint) and try to sign in with the username/password form.
+
+NOTE: If you are not able to authenticate your users, it means that something is invalid with the identity provider settings. Check the Gravitee.io AM gateway log or the audit logs for more information.

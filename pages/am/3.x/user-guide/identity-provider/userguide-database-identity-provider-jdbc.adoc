@@ -1,0 +1,40 @@
+= JDBC
+:page-sidebar: am_3_x_sidebar
+:page-permalink: am/current/am_userguide_database_identity_provider_jdbc.html
+:page-folder: am/user-guide
+:page-layout: am
+
+NOTE: New in Gravitee.io AM 3.3.x
+
+NOTE: Make sure that your database has the appropriate fields to store user profiles attributes, such as *id*, *username*, *email*, *password* and *metadata*.
+
+Gravitee.io AM allows you to authenticate users with the commonly-used databases, including :
+
+- PostgreSQL
+- MySQL
+- Microsoft SQL Server
+- MariaDB
+
+== Create a SQL Database identity provider
+
+Identity providers are created for each security domain, to create an identity provider, follow these steps:
+
+. Go to http://GRAVITEEIO-AM-UI-HOST
+. From the homepage, go to your security domain's `Settings` page, go to `Providers` section
+. From the security domain's providers page, click `(+)` button
+. Choose the `JDBC` identity provider and press `NEXT`
+. Give your identity provider a name
+. Configure the settings as requested
+. Press `Create`
+
+== Test connection
+
+You can test your database connection via your web applications created in Gravitee.io AM.
+
+In the Portal UI, navigate to your `Application > Identity Providers` section and select your database identity provider.
+
+image::am/current/graviteeio-am-userguide-social-idp-list.png[]
+
+To properly test, you should call the Login Page (i.e `/oauth/authorize` endpoint) and try to sign in with the username/password form.
+
+NOTE: If you are not able to authenticate your users, it means that something is invalid with the identity provider settings. Check the Gravitee.io AM gateway log or the audit logs for more information.

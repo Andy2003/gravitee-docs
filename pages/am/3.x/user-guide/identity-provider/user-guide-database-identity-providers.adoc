@@ -1,0 +1,11 @@
+= Database Identity Providers
+:page-sidebar: am_3_x_sidebar
+:page-permalink: am/current/am_userguide_database_identity_providers.html
+:page-folder: am/user-guide
+:page-layout: am
+
+Gravitee.io AM provides out of the box the most common database servers to authenticate your users such as MongoDB, PostgresSQL, MySQL, SQL Server, MariaDB, ...
+
+- link:/am/current/am_userguide_database_identity_provider_jdbc.html[Connect your application with a SQL database (JDBC)]
+- link:/am/current/am_userguide_database_identity_provider_mongodb.html[Connect your application with MongoDB]
+- link:/am/current/am_userguide_database_identity_provider_inline.html[Connect your application with Inline]

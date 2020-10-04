@@ -1,0 +1,48 @@
+= Inline
+:page-sidebar: am_3_x_sidebar
+:page-permalink: am/current/am_userguide_database_identity_provider_inline.html
+:page-folder: am/user-guide
+:page-layout: am
+
+In memory user directory, useful for testing purpose or setting default accounts.
+
+== Create an Inline identity provider
+
+Identity providers are created for each security domain, to create an identity provider, follow these steps:
+
+. Go to http://GRAVITEEIO-AM-UI-HOST
+. From the homepage, go to your security domain's `Settings` page, go to `Providers` section
+. From the security domain's providers page, click `(+)` button
+. Choose the `Inline` identity provider and press `NEXT`
+. Give your identity provider a name
+. Configure the settings as requested
+. Press `Create`
+
+NOTE: If you want to register multiple users, you can press the `Add user` button before clicking on the `Create` button.
+
+You can also create the identity provider via the Gravitee.io AM API
+
+[source]
+----
+curl -H "Authorization: Bearer :accessToken" \
+     -H "Content-Type:application/json;charset=UTF-8" \
+     -X POST \
+     -d '{
+           "type": "inline-am-idp",
+           "name": "Inline IdP",
+           "configuration": "{\"users\":[{\"firstname\":\"johndoe\",\"lastname\":\"John\",\"username\":\"Doe\",\"password\":\"johndoepassword\"}]}"
+         }' \
+     http://GRAVITEEIO-AM-MGT-API-HOST/management/organizations/DEFAULT/environments/DEFAULT/domains/:domainId/identities
+----
+
+== Test connection
+
+You can test your database connection via your web applications created in Gravitee.io AM.
+
+In the Portal UI, navigate to your `Application > Identity Providers` section and select your inline identity provider.
+
+image::am/current/graviteeio-am-userguide-social-idp-list.png[]
+
+To properly test, you should call the Login Page (i.e `/oauth/authorize` endpoint) and try to sign in with the username/password form.
+
+NOTE: If you are not able to authenticate your users, it means that something is invalid with the identity provider settings. Check the Gravitee.io AM gateway log or the audit logs for more information.
